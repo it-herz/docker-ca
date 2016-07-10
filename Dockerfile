@@ -24,7 +24,7 @@ VOLUME [ "/usr/lib/ssl/CA", "/storage", "/var/www" ]
 ADD 03-initialize /etc/container-run.d/
 ADD openssl.cnf /
 ADD ca.req /
-ADD sign /
-ADD revoke /
+ADD sign /usr/sbin
+ADD revoke /usr/sbin
 
 EXPOSE 80
