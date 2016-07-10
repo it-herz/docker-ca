@@ -2,10 +2,10 @@
 
 if [ -f /storage/req/$1.csr ]
 then
-  openssl ca -config /usr/local/sbin/genca.req -config /usr/local/sbin/genca.req -passin file:/password -cert /usr/lib/ssl/CA/cacert.pem -in /storage/req/$1.csr -out /storage/crt/$1.cert -utf8
+  openssl ca -config /usr/lib/ssl/CA/ca.req -passin file:/password -cert /usr/lib/ssl/CA/cacert.pem -in /storage/req/$1.csr -out /storage/crt/$1.cert -utf8
   if [ $? -eq 0 ]
   then
-    cp /storage/crt/$1.cert /var/www/certs/$1.cert
+    cp /storage/crt/$1.cert /var/www/html/certs/$1.cert
     rm /storage/req/$1.csr
   fi
 fi
