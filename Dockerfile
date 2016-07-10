@@ -10,7 +10,7 @@ ENV [ "DAYS 730", "CLIENT_DAYS 730", "START_SERIAL 646464", "START_CRL 1000", "C
 
 VOLUME [ "/usr/lib/ssl/CA", "/storage", "/var/www" ]
 
-ADD run /etc/container-run.d/
+ADD 03-initialize /etc/container-run.d/
 
 ADD openssl.cnf /
 ADD ca.req /
