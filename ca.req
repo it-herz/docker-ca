@@ -1,0 +1,124 @@
+[ default ]
+ca                      = #CAHOST#
+dir                     = /usr/lib/ssl/#DIR#
+base_url                = http://#CAHOST#
+aia_url                 = $base_url/ca.crt
+crl_url                 = $base_url/ca.crl
+name_opt                = multiline,-esc_msb,utf8
+
+[ req ]
+default_bits            = #KEYLENGTH#
+encrypt_key             = yes
+default_md              = sha512
+utf8                    = yes
+string_mask             = utf8only
+prompt                  = no
+output_password         = #PASSWORD#
+distinguished_name      = req_distinguished_name
+attributes              = req_attributes
+req_extensions          = req_ca
+subjectAltName          = @ca_alt_names
+
+[ req_distinguished_name ]
+
+C                       = #COUNTRY#
+ST                      = #STATE#
+L                       = #LOCALITY#
+O                       = #ORGANIZATION#
+OU                      = #OU#
+CN                      = #CAHOST#
+emailAddress            = #EMAIL#
+
+[ req_attributes ]
+challengePassword       = A challenge password
+
+[ ca_alt_names ]
+DNS.0                   = #CAHOST#
+DNS.1                   = #WEBHOST#
+
+[ req_ca ]
+#define everything in signing section [v3_ca]
+
+[ v3_ca ]
+subjectKeyIdentifier    = hash
+authorityKeyIdentifier  = keyid:always,issuer:always
+basicConstraints        = critical, CA:true,pathlen:0
+keyUsage                = critical, cRLSign, keyCertSign, keyAgreement
+authorityInfoAccess     = @issuer_info
+crlDistributionPoints   = @crl_info
+subjectAltName          = @ca_alt_names
+
+[policy_local]
+countryName             = match
+stateOrProvinceName     = match
+localityName            = match
+organizationName        = match
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ca]
+default_ca              = #CAHOST#
+
+[#CAHOST#]
+batch                   = yes
+prompt                  = no
+
+dir                     = /usr/lib/ssl/CA      # Where everything is kept
+webdir                  = #WEBDIR#             # web server root directory
+RANDFILE                = $dir/private/.rand            # private random number file
+private_key             = /usr/lib/ssl/CA/private/cakey.pem
+
+certs                   = $webdir/certs                  # Where the issued certs are kept
+certificate             = /usr/lib/ssl/CA/cacert.pem     # The CA certificate
+new_certs_dir           = /usr/lib/ssl/CA/newcerts/
+
+#CRL configuration
+crl_dir                 = #WEBDIR#/crl                   # Where the issued crl are kept
+crlnumber               = /usr/lib/ssl/CA/crlnumber      # the current crl number
+crl                     = #WEBDIR#/ca.crl                # The current CRL
+
+database                = /usr/lib/ssl/CA/index.txt
+
+#signing configuration
+default_md              = sha512
+email_in_dn             = yes
+default_crl_days        = #CRLDAYS#
+policy                  = policy_local
+serial                  = /usr/lib/ssl/CA/serial
+default_days            = #CLIENTDAYS#
+
+#add extensions (certificate, CRL)
+copy_extensions         = copy
+x509_extensions         = usr_cert
+crl_extensions          = crl_ext
+crlDistributionPoints   = @crl_info
+utf8                    = yes
+string_mask             = utf8only
+
+#default values
+countryName_default     = #COUNTRY#
+state_default           = #STATE#
+locality_default        = #LOCALITY#
+organization_default    = #ORGANIZATION#
+
+default_crl_days        = #CRLDAYS#
+preserve                = no            # keep passed DN ordering
+
+[ usr_cert ]
+basicConstraints        = CA:false
+subjectKeyIdentifier    = hash
+authorityKeyIdentifier  = keyid:always
+authorityInfoAccess     = @issuer_info
+crlDistributionPoints   = @crl_info
+
+#CRL configuration
+[crl_ext]
+authorityKeyIdentifier  = keyid:always
+authorityInfoAccess     = @issuer_info
+
+[issuer_info]
+caIssuers;URI.0         = $aia_url
+
+[crl_info]
+URI.0                   = $crl_url

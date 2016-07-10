@@ -1,0 +1,16 @@
+DAYS=730
+CLIENTDAYS=730
+STARTSERIAL=646464
+STARTCRL=1000
+CRLDAYS=30
+KEYLENGTH=2048
+COUNTRY=RU
+STATE=Russian Federation
+LOCALITY=St. Petersburg
+ORGANIZATION=Default Organization
+OU=IT Department
+PASSWORD=changeme
+EMAIL=support@org.ru
+CAHOST=ca.hspu.local
+WEBHOST=ca.herzen.spb.ru
+WEBDIR=/var/www

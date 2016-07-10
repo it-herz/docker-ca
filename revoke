@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#revoke user or host certificate
+#usage: revoke.sh <user|hostname>
+
+if [ -f /storage/crt/$1.cert ]
+then
+  if [ "$1" == "$CAHOST" ] || [ "$1" == "ca" ] 
+  then
+    echo "Never remove CA certificate!"
+  else
+    openssl ca -config /usr/lib/ssl/CA/ca.req -revoke /storage/crt/$1.cert -passin 'file:/password'
+    openssl ca -config /usr/lib/ssl/CA/ca.req -gencrl -out /var/www/ca.crl -passin 'file:/password'
+    rm /storage/crt/$1.cert
+  fi
+else
+  echo "$1 is not found"
+fi
