@@ -136,16 +136,16 @@ stateOrProvinceName             = State or Province Name (full name)
 stateOrProvinceName_default     = #STATE#
 
 localityName                    = Locality Name (eg, city)
-#localityName_default           = #LOCALITY#
+localityName_default           = #LOCALITY#
 
 0.organizationName              = Organization Name (eg, company)
 0.organizationName_default      = #ORGANIZATION#
 
 organizationalUnitName          = Organizational Unit Name (eg, section)
-organizationalUnitName_default  = #OU#
+#organizationalUnitName_default = #OU#
 
 commonName                      = Common Name (e.g. server FQDN or YOUR name)
-commonName_max                  = 64
+commonName_max                  = 128
 
 emailAddress                    = Email Address
 emailAddress_max                = 64

@@ -29,8 +29,8 @@ then
 
   echo "$PASSWORD" >/password
   cd /usr/lib/ssl/CA
-  echo $STARTSERIAL >serial
-  echo '01' >crlnumber
+  echo '$STARTSERIAL' >serial
+  echo '$STARTCRL' >crlnumber
 
   touch /usr/lib/ssl/CA/index.txt
 
