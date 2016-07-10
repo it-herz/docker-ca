@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p /usr/lib/ssl/CA
-mkdir -p /var/www
+mkdir -p /var/www/html
 
 IFS=';;;;'
 envs=(`cat /proc/1/environ | xargs -0 -n 1 echo ';;;;'`)
@@ -20,7 +20,7 @@ do
     ENV[$name]="$value"
 done
 
-WEBDIR=/var/www
+WEBDIR=/var/www/html
 
 if [ ! -f /usr/lib/ssl/CA/initialized ]
 then
@@ -29,8 +29,9 @@ then
   mkdir -p /storage/crt
   mkdir -p /storage/req
   mkdir -p /etc/ssl/p12
-  mkdir -p /var/www/certs
-  mkdir -p /var/www/crl
+  mkdir -p /var/www/html/certs
+  mkdir -p /var/www/html/crl
+  mkdir -p /var/www/html/p12
 
   cp /openssl.cnf /usr/lib/ssl/
   sed -i "s~#DIR#~${ENV[DIR]}~ig" /usr/lib/ssl/openssl.cnf
@@ -75,10 +76,10 @@ then
                             -extensions v3_ca \
                             -utf8 -infiles /usr/lib/ssl/CA/careq.pem
                            
-  openssl ca -keyfile /usr/lib/ssl/CA/private/cakey.pem -cert /usr/lib/ssl/CA/cacert.pem -gencrl -out /var/www/ca.crl -passin file:/password
-  openssl x509 -in /usr/lib/ssl/CA/cacert.pem -out /var/www/ca.der -outform DER
+  openssl ca -keyfile /usr/lib/ssl/CA/private/cakey.pem -cert /usr/lib/ssl/CA/cacert.pem -gencrl -out /var/www/html/ca.crl -passin file:/password
+  openssl x509 -in /usr/lib/ssl/CA/cacert.pem -out /var/www/html/ca.der -outform DER
 
-  cp /usr/lib/ssl/CA/cacert.pem /var/www/ca.crt
+  cp /usr/lib/ssl/CA/cacert.pem /var/www/html/ca.crt
   cp /usr/lib/ssl/CA/cacert.pem /storage/crt/ca.cert
   cp /usr/lib/ssl/CA/cacert.pem /storage/crt/$CA_HOST.cert
   cp /usr/lib/ssl/CA/private/cakey.pem /etc/ssl/private/$CA_HOST.key
