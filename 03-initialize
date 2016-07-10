@@ -67,7 +67,7 @@ then
   sed -i "s~#CAHOST#~${ENV[CAHOST]}~ig" /usr/lib/ssl/CA/ca.req
   sed -i "s~#PASSWORD#~${ENV[PASSWORD]}~ig" /usr/lib/ssl/CA/ca.req
   sed -i "s~#EMAIL#~${ENV[EMAIL]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#WEBHOST#~${ENV[$WEBHOST]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#WEBHOST#~${ENV[WEBHOST]}~ig" /usr/lib/ssl/CA/ca.req
 
   openssl req -new -config /usr/lib/ssl/CA/ca.req -keyout /usr/lib/ssl/CA/private/cakey.pem -utf8 -out /usr/lib/ssl/CA/careq.pem
   openssl ca -create_serial -out /usr/lib/ssl/CA/cacert.pem -days $DAYS -key $PASSWORD -batch -config /usr/lib/ssl/CA/ca.req \
