@@ -7,6 +7,8 @@ IFS=';;;;'
 envs=(`cat /proc/1/environ | xargs -0 -n 1 echo ';;;;'`)
 unset IFS
 
+declare -A ENV
+
 for _curVar in "${envs[@]}"
 do
     value=`echo "$_curVar" | awk -F = '{print $2}'`
@@ -17,7 +19,6 @@ do
     fi
     ENV[$name]="$value"
 done
-
 
 WEBDIR=/var/www
 
@@ -32,41 +33,41 @@ then
   mkdir -p /var/www/crl
 
   cp /openssl.cnf /usr/lib/ssl/
-  sed -i "s~#DIR#~${ENV["DIR"]}~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#WEBDIR#~${ENV["WEBDIR"]}~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#DAYS#~${ENV["DAYS]}~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#CRLDAYS#~${ENV["CRLDAYS]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#DIR#~${ENV[DIR]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#WEBDIR#~${ENV[WEBDIR]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#DAYS#~${ENV[DAYS]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#CRLDAYS#~${ENV[CRLDAYS]}~ig" /usr/lib/ssl/openssl.cnf
 
-  sed -i "s~#KEYLENGTH#~$KEYLENGTH~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#COUNTRY#~$COUNTRY~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#STATE#~$STATE~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#LOCALITY#~$LOCALITY~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#ORGANIZATION#~$ORGANIZATION~ig" /usr/lib/ssl/openssl.cnf
-  sed -i "s~#OU#~$OU~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#KEYLENGTH#~${ENV[KEYLENGTH]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#COUNTRY#~${ENV[COUNTRY]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#STATE#~${ENV[STATE]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#LOCALITY#~${ENV[LOCALITY]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#ORGANIZATION#~${ENV[ORGANIZATION]}~ig" /usr/lib/ssl/openssl.cnf
+  sed -i "s~#OU#~${ENV[OU]}~ig" /usr/lib/ssl/openssl.cnf
 
-  echo "$PASSWORD" >/password
+  echo "${ENV[PASSWORD]}" >/password
   cd /usr/lib/ssl/CA
-  echo '$STARTSERIAL' >serial
-  echo '$STARTCRL' >crlnumber
+  echo '${ENV[STARTSERIAL]}' >serial
+  echo '${ENV[STARTCRL]}' >crlnumber
 
   touch /usr/lib/ssl/CA/index.txt
 
   cp /ca.req /usr/lib/ssl/CA/ca.req
-  sed -i "s~#DIR#~${ENV["DIR"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#WEBDIR#~${ENV["WEBDIR"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#DAYS#~${ENV["DAYS"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#CRLDAYS#~${ENV["CRLDAYS"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#KEYLENGTH#~${ENV["KEYLENGTH"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#COUNTRY#~${ENV["COUNTRY"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#STATE#~${ENV["STATE"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#LOCALITY#~${ENV["LOCALITY"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#ORGANIZATION#~${ENV["ORGANIZATION"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#OU#~${ENV["OU"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#CLIENTDAYS#~${ENV["CLIENTDAYS"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#CAHOST#~${ENV["CAHOST"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#PASSWORD#~${ENV["PASSWORD"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#EMAIL#~${ENV["EMAIL"]}~ig" /usr/lib/ssl/CA/ca.req
-  sed -i "s~#WEBHOST#~${ENV["$WEBHOST"]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#DIR#~${ENV[DIR]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#WEBDIR#~${ENV[WEBDIR]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#DAYS#~${ENV[DAYS]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#CRLDAYS#~${ENV[CRLDAYS]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#KEYLENGTH#~${ENV[KEYLENGTH]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#COUNTRY#~${ENV[COUNTRY]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#STATE#~${ENV[STATE]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#LOCALITY#~${ENV[LOCALITY]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#ORGANIZATION#~${ENV[ORGANIZATION]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#OU#~${ENV[OU]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#CLIENTDAYS#~${ENV[CLIENTDAYS]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#CAHOST#~${ENV[CAHOST]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#PASSWORD#~${ENV[PASSWORD]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#EMAIL#~${ENV[EMAIL]}~ig" /usr/lib/ssl/CA/ca.req
+  sed -i "s~#WEBHOST#~${ENV[$WEBHOST]}~ig" /usr/lib/ssl/CA/ca.req
 
   openssl req -new -config /usr/lib/ssl/CA/ca.req -keyout /usr/lib/ssl/CA/private/cakey.pem -utf8 -out /usr/lib/ssl/CA/careq.pem
   openssl ca -create_serial -out /usr/lib/ssl/CA/cacert.pem -days $DAYS -key $PASSWORD -batch -config /usr/lib/ssl/CA/ca.req \
