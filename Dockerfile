@@ -18,5 +18,3 @@ ADD sign /
 ADD revoke /
 
 EXPOSE 80
-
-CMD [ "/run" ]
