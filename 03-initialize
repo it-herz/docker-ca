@@ -47,8 +47,8 @@ then
 
   echo "${ENV[PASSWORD]}" >/password
   cd /usr/lib/ssl/CA
-  echo '${ENV[STARTSERIAL]}' >serial
-  echo '${ENV[STARTCRL]}' >crlnumber
+  echo "${ENV[STARTSERIAL]}" >serial
+  echo "${ENV[STARTCRL]}" >crlnumber
 
   touch /usr/lib/ssl/CA/index.txt
 
