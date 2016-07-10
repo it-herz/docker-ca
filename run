@@ -66,34 +66,4 @@ then
   cp /usr/lib/ssl/CA/private/cakey.pem /etc/ssl/private/$CA_HOST.key
   touch /usr/lib/ssl/CA/initialized
 fi
-
-if [ $# -eq 0 ]
-then
-  echo "Usage:"
-  echo "signhost <fqdn> - sign new host"
-  echo "signaccount <email> - sign new account"
-  echo "revoke <fqdn> - revoke host"
-  exit 0
-fi
-
-if [ "$1" == "signhost" ]
-then
-  HOST=$2
-  echo Signing host $HOST
-  exit 0
-fi
-
-if [ "$1" == "signaccount" ]
-then
-  ACCOUNT=$2
-  echo Signing account $ACCOUNT
-  exit 0
-fi
-
-if [ "$1" == "revoke" ]
-then
-  CN=$2
-  echo Revoking account $CN
-  exit 0
-fi
-
+exit 0
