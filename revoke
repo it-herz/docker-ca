@@ -18,7 +18,7 @@ else
   FOUND=0
   for A in `ls -1 /usr/lib/ssl/CA/newcerts`
   do
-    cat $A | grep $1 >/dev/null 2>&1
+    cat /usr/lib/ssl/CA/newcerts/$A | grep $1 >/dev/null 2>&1
     if [ $? -eq 0 ]
     then
       openssl ca -config /usr/lib/ssl/CA/ca.req -revoke /usr/lib/ssl/CA/newcerts/$A -passin 'file:/password'
