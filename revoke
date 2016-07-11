@@ -14,5 +14,21 @@ then
     rm /storage/crt/$1.cert
   fi
 else
-  echo "$1 is not found"
+  echo Searching in issued certificates...
+  FOUND=0
+  for A in `ls -1 /usr/lib/ssl/CA/newcerts`
+  do
+    cat $A | grep $1 >/dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+      openssl ca -config /usr/lib/ssl/CA/ca.req -revoke /usr/lib/ssl/CA/newcerts/$A -passin 'file:/password'
+      FOUND=1
+    fi
+  done
+  if [ $FOUND -ne 0 ]
+  then
+    openssl ca -config /usr/lib/ssl/CA/ca.req -gencrl -out /var/www/ca.crl -passin 'file:/password'
+  else
+    echo "$1 is not found"
+  fi
 fi
