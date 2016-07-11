@@ -22,6 +22,8 @@ done
 
 WEBDIR=/var/www/html
 
+echo "${ENV[PASSWORD]}" >/password
+
 if [ ! -f /usr/lib/ssl/CA/initialized ]
 then
   mkdir -p /usr/lib/ssl/CA/newcerts
@@ -46,7 +48,6 @@ then
   sed -i "s~#ORGANIZATION#~${ENV[ORGANIZATION]}~ig" /usr/lib/ssl/openssl.cnf
   sed -i "s~#OU#~${ENV[OU]}~ig" /usr/lib/ssl/openssl.cnf
 
-  echo "${ENV[PASSWORD]}" >/password
   cd /usr/lib/ssl/CA
   echo "${ENV[STARTSERIAL]}" >serial
   echo "${ENV[STARTCRL]}" >crlnumber

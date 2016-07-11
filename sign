@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -z "$1" ]
+then
+  echo "Usage: sign <csr-name>"
+fi
+
 if [ -f /storage/req/$1.csr ]
 then
   openssl ca -config /usr/lib/ssl/CA/ca.req -passin file:/password -cert /usr/lib/ssl/CA/cacert.pem -in /storage/req/$1.csr -out /storage/crt/$1.cert -utf8
